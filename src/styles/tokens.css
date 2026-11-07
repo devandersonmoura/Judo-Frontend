@@ -1,0 +1,43 @@
+/* Layout: faixa azul de judogi à esquerda, formulário à direita; no celular a faixa vira o topo. */
+:root {
+  --bg: #eef1f6;
+  --surface: #ffffff;
+  --ink: #131c33;
+  --muted: #566076;
+  --line: #d3d9e5;
+  --accent: #1f3fa6;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3e9fb;
+  --hero: #1f3fa6;
+  --hero-ink: #ffffff;
+  --hero-muted: #d0daf7;
+  --danger: #b3261e;
+  --danger-soft: #fbe9e7;
+  --belt-edge: rgb(19 28 51 / 28%);
+  --stitch: rgb(0 0 0 / 14%);
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1422;
+    --surface: #171f31;
+    --ink: #eaeef6;
+    --muted: #a0abc0;
+    --line: #2f3a55;
+    --accent: #8ba6f7;
+    --accent-ink: #0e1422;
+    --accent-soft: #222e4e;
+    --hero: #18296b;
+    --hero-muted: #c3cff2;
+    --danger: #f4938b;
+    --danger-soft: #3b1f20;
+    --belt-edge: rgb(255 255 255 / 30%);
+    color-scheme: dark;
+  }
+}
