@@ -9,11 +9,18 @@
   display: grid;
   gap: 0.5rem;
   align-content: start;
-  padding-block: 2rem 3rem;
+  justify-items: center;
+  padding-block: 2rem 7rem;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   background: var(--hero);
   color: var(--hero-ink);
+  text-align: center;
+}
+
+.logo--hero {
+  width: 170px;
+  margin-bottom: 0.5rem;
 }
 
 .hero__eyebrow {
@@ -28,20 +35,53 @@
   text-transform: uppercase;
 }
 
-.hero__text {
-  max-width: 34ch;
-  color: var(--hero-muted);
-}
-
 /* Faixa que acompanha a cor escolhida no formulário. */
 .hero__belt {
   --belt: #f4f4f1;
+  --band: 18px;
   position: absolute;
-  inset: auto 0 0;
-  height: 20px;
+  inset: auto 0 68px;
+  height: var(--band);
   background-color: var(--belt);
   background-image: repeating-linear-gradient(0deg, var(--stitch) 0 1px, transparent 1px 5px);
   transition: background-color 200ms ease;
+}
+
+/* A largura sai da espessura da faixa: no desenho ela tem 28 de 200 unidades. */
+.belt-knot {
+  position: absolute;
+  top: calc(var(--band) * -26 / 28);
+  left: 50%;
+  width: calc(var(--band) * 200 / 28);
+  transform: translateX(-50%);
+  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 30%));
+}
+
+.belt-knot__fabric {
+  fill: var(--belt);
+  transition: fill 200ms ease;
+}
+
+.belt-knot__stitch,
+.belt-knot__fold,
+.belt-knot__shine {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.belt-knot__stitch {
+  stroke: var(--stitch);
+  stroke-width: 1;
+}
+
+.belt-knot__fold {
+  stroke: rgb(0 0 0 / 34%);
+  stroke-width: 2;
+}
+
+.belt-knot__shine {
+  stroke: rgb(255 255 255 / 20%);
+  stroke-width: 1.5;
 }
 
 .page__content {
@@ -56,6 +96,10 @@
 .form {
   display: grid;
   gap: 1.75rem;
+}
+
+.form__intro {
+  color: var(--muted);
 }
 
 .form__error {
@@ -228,16 +272,19 @@
     position: sticky;
     top: 0;
     height: 100dvh;
-    padding-block: 3.5rem;
+    padding-block: 3.5rem 13rem;
     padding-inline: 3rem;
     align-content: center;
   }
 
+  .logo--hero {
+    width: 300px;
+    margin-bottom: 1.5rem;
+  }
+
   .hero__belt {
-    position: static;
-    height: 30px;
-    margin-top: 1.5rem;
-    margin-inline: -3rem;
+    --band: 28px;
+    bottom: 104px;
   }
 
   .page__content {

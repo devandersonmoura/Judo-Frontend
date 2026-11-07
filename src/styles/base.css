@@ -49,8 +49,8 @@ h2 {
 }
 
 .button:disabled {
-  opacity: 0.6;
-  cursor: progress;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .button--primary {
@@ -68,6 +68,19 @@ h2 {
 .button--danger {
   border-color: var(--danger);
   color: var(--danger);
+}
+
+.button--danger-solid {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--surface);
+}
+
+.logo {
+  display: block;
+  aspect-ratio: 876 / 577;
+  background-color: currentcolor;
+  mask: url('../assets/logo.png') center / contain no-repeat;
 }
 
 .belt-strip {

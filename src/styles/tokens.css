@@ -13,6 +13,10 @@
   --hero-muted: #d0daf7;
   --danger: #b3261e;
   --danger-soft: #fbe9e7;
+  --warn: #8a5a00;
+  --warn-soft: #fdf0d2;
+  --ok: #1a6e3a;
+  --ok-soft: #dff3e6;
   --belt-edge: rgb(19 28 51 / 28%);
   --stitch: rgb(0 0 0 / 14%);
 
@@ -37,6 +41,10 @@
     --hero-muted: #c3cff2;
     --danger: #f4938b;
     --danger-soft: #3b1f20;
+    --warn: #f0c469;
+    --warn-soft: #3a2e14;
+    --ok: #7fd8a0;
+    --ok-soft: #173427;
     --belt-edge: rgb(255 255 255 / 30%);
     color-scheme: dark;
   }

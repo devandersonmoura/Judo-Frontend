@@ -10,9 +10,19 @@ export function OrderSummary({ registrations }) {
   const belts = options.belts.filter(({ value }) => registrations.some((item) => item.belt === value));
   const sizes = options.sizes.filter(({ value }) => registrations.some((item) => item.size === value));
 
+  if (registrations.length === 0) {
+    return (
+      <section className="panel__section">
+        <h2 className="panel__heading">Resumo para encomendar</h2>
+        <p className="panel__empty">Nenhum pedido pendente.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="panel__section">
       <h2 className="panel__heading">Resumo para encomendar</h2>
+      <p className="panel__empty">Conta só os pedidos pendentes.</p>
       <div className="table-scroll">
         <table className="table table--summary">
           <thead>

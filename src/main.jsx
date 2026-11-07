@@ -9,7 +9,9 @@ import { App } from './App.jsx';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/form.css';
+import './styles/dialog.css';
 import './styles/professor.css';
+import './styles/status.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

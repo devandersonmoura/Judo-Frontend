@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { login } from '../api.js';
+import { TEACHER_NAME } from '../teacher.js';
+import { Logo } from '../ui/Logo.jsx';
 
 export function LoginForm({ onLogin }) {
   const [password, setPassword] = useState('');
@@ -20,7 +22,8 @@ export function LoginForm({ onLogin }) {
 
   return (
     <main className="login">
-      <h1 className="login__title">Área do professor</h1>
+      <Logo className="logo--login" />
+      <h1 className="login__title">{TEACHER_NAME}</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="field" data-invalid={error ? 'true' : undefined}>
           <label className="field__label" htmlFor="password">

@@ -1,25 +1,31 @@
 import { downloadCsv } from '../api.js';
-import { useOptions } from '../options/OptionsContext.jsx';
+import { TEACHER_NAME } from '../teacher.js';
+import { Logo } from '../ui/Logo.jsx';
 import { FormLink } from './FormLink.jsx';
-import { OrderSummary } from './OrderSummary.jsx';
-import { RegistrationTable } from './RegistrationTable.jsx';
+import { Orders } from './Orders.jsx';
 import { useRegistrations } from './useRegistrations.js';
 
 function countLabel(total) {
-  return total === 1 ? '1 pessoa preencheu' : `${total} pessoas preencheram`;
+  return total === 1 ? '1 pedido' : `${total} pedidos`;
 }
 
 export function Dashboard({ token, onLogout }) {
-  const { categories } = useOptions();
-  const { registrations, error, remove, handleFailure } = useRegistrations(token, onLogout);
+  const { registrations, error, remove, changeStatus, handleFailure } = useRegistrations(
+    token,
+    onLogout,
+  );
   const hasEntries = registrations?.length > 0;
 
   return (
     <div className="panel">
       <header className="panel__header">
-        <div>
-          <h1 className="panel__title">Cadastro de faixas</h1>
-          {registrations && <p className="panel__count">{countLabel(registrations.length)}</p>}
+        <div className="panel__brand">
+          <Logo className="logo--panel" />
+          <div>
+            <p className="panel__teacher">{TEACHER_NAME}</p>
+            <h1 className="panel__title">Troca de faixa</h1>
+            {registrations && <p className="panel__count">{countLabel(registrations.length)}</p>}
+          </div>
         </div>
         <div className="panel__actions">
           {hasEntries && (
@@ -45,26 +51,14 @@ export function Dashboard({ token, onLogout }) {
       {!registrations && !error && <p className="panel__empty">Carregando…</p>}
       {registrations?.length === 0 && (
         <p className="panel__empty">
-          Ninguém preencheu ainda. Envie o link abaixo para a turma; cada cadastro aparece aqui.
+          Ninguém preencheu ainda. Envie o link abaixo para a turma; cada pedido aparece aqui.
         </p>
       )}
 
       <FormLink />
 
       {hasEntries && (
-        <>
-          <OrderSummary registrations={registrations} />
-          <div className="panel__tables">
-            {categories.map(({ value, label }) => (
-              <RegistrationTable
-                key={value}
-                title={label === 'Adulto' ? 'Adultos' : label}
-                registrations={registrations.filter((item) => item.category === value)}
-                onRemove={remove}
-              />
-            ))}
-          </div>
-        </>
+        <Orders registrations={registrations} onRemove={remove} onStatusChange={changeStatus} />
       )}
     </div>
   );

@@ -29,7 +29,8 @@ async function send(path, { token, body, method = 'GET' } = {}) {
 async function ensureOk(response) {
   if (response.ok) return response;
   const data = await response.json().catch(() => ({}));
-  throw new ApiError(data.error ?? 'Confira os campos marcados.', {
+  const fallback = data.errors ? 'Confira os campos marcados.' : OFFLINE_MESSAGE;
+  throw new ApiError(data.error ?? fallback, {
     status: response.status,
     errors: data.errors,
   });
@@ -57,6 +58,15 @@ export async function fetchRegistrations(token) {
   return response.json();
 }
 
+export async function updateRegistrationStatus(id, status, token) {
+  const response = await request(`/registrations/${id}/status`, {
+    method: 'PATCH',
+    body: { status },
+    token,
+  });
+  return response.json();
+}
+
 export async function deleteRegistration(id, token) {
   await request(`/registrations/${id}`, { method: 'DELETE', token });
 }
@@ -68,5 +78,6 @@ export async function downloadCsv(token) {
   link.href = url;
   link.download = 'faixas-judo.csv';
   link.click();
-  URL.revokeObjectURL(url);
+  // Alguns navegadores ainda estão lendo o arquivo logo depois do clique.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

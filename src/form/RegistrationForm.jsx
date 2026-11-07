@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useOptions } from '../options/OptionsContext.jsx';
+import { TEACHER_SHORT_NAME } from '../teacher.js';
 import { BeltStrip } from '../ui/BeltStrip.jsx';
 import { Choice, ChoiceGroup } from '../ui/ChoiceGroup.jsx';
 
@@ -7,7 +8,6 @@ export function RegistrationForm({
   entry,
   errors,
   formError,
-  sending,
   rejectedCount,
   onChange,
   onSubmit,
@@ -27,6 +27,10 @@ export function RegistrationForm({
 
   return (
     <form ref={formRef} className="form" onSubmit={handleSubmit} noValidate>
+      <p className="form__intro">
+        Preencha uma vez por pessoa. Para crianças, o responsável preenche com o nome delas.
+      </p>
+
       <ChoiceGroup legend="Quem vai usar a faixa?" error={errors.category} className="choices--two">
         {categories.map(({ value, label }) => (
           <Choice
@@ -57,7 +61,7 @@ export function RegistrationForm({
         {errors.name && <p className="field__error">{errors.name}</p>}
       </div>
 
-      <ChoiceGroup legend="Cor da faixa" error={errors.belt} className="choices--three">
+      <ChoiceGroup legend="Cor da faixa nova" error={errors.belt} className="choices--three">
         {belts.map(({ value, label, color }) => (
           <Choice
             key={value}
@@ -74,7 +78,7 @@ export function RegistrationForm({
 
       <ChoiceGroup
         legend="Tamanho da faixa"
-        hint="Não sabe o seu? Pergunte ao professor antes de enviar."
+        hint={`Não sabe o seu? Pergunte ao ${TEACHER_SHORT_NAME} antes de enviar.`}
         error={errors.size}
         className="choices--three"
       >
@@ -98,8 +102,8 @@ export function RegistrationForm({
         </p>
       )}
 
-      <button className="button button--primary button--wide" type="submit" disabled={sending}>
-        {sending ? 'Enviando…' : 'Enviar para o professor'}
+      <button className="button button--primary button--wide" type="submit">
+        Enviar
       </button>
     </form>
   );

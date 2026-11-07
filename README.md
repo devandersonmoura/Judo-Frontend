@@ -1,9 +1,9 @@
 # Judo-Frontend
 
-Site do cadastro de faixas de judô, em React. A API fica em [Judo-Backend](https://github.com/devandersonmoura/Judo-Backend).
+Site de pedido e troca de faixa do Judô Lugli, em React. A API fica em [Judo-Backend](https://github.com/devandersonmoura/Judo-Backend).
 
 - `/`: formulário, sem login
-- `/professor`: lista de adultos e infantil, resumo para encomendar, exclusão e planilha CSV
+- `/professor`: pedidos com busca, filtro e status, resumo para encomendar, exclusão e planilha CSV
 
 ## Rodar no computador
 
