@@ -62,7 +62,7 @@ export function RegistrationForm({
       </div>
 
       <ChoiceGroup legend="Cor da faixa nova" error={errors.belt} className="choices--three">
-        {belts.map(({ value, label, color }) => (
+        {belts.map(({ value, label, formLabel, color }) => (
           <Choice
             key={value}
             name="belt"
@@ -71,7 +71,7 @@ export function RegistrationForm({
             onChange={(belt) => onChange({ belt })}
           >
             <BeltStrip color={color} />
-            <span className="choice__caption">{label}</span>
+            <span className="choice__caption">{formLabel ?? label}</span>
           </Choice>
         ))}
       </ChoiceGroup>

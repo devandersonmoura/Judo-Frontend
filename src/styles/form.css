@@ -153,6 +153,11 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* A última opção sozinha na linha ocupa a largura toda, como o Não sei das cores. */
+.choices--three .choice:last-child:nth-child(3n + 1) {
+  grid-column: 1 / -1;
+}
+
 .choice {
   position: relative;
   display: block;

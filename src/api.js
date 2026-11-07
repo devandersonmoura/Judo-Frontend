@@ -58,10 +58,10 @@ export async function fetchRegistrations(token) {
   return response.json();
 }
 
-export async function updateRegistrationStatus(id, status, token) {
-  const response = await request(`/registrations/${id}/status`, {
+export async function updateRegistration(id, field, value, token) {
+  const response = await request(`/registrations/${id}/${field}`, {
     method: 'PATCH',
-    body: { status },
+    body: { [field]: value },
     token,
   });
   return response.json();

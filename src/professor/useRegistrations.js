@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { deleteRegistration, fetchRegistrations, updateRegistrationStatus } from '../api.js';
+import { deleteRegistration, fetchRegistrations, updateRegistration } from '../api.js';
 
 export function useRegistrations(token, onExpired) {
   const [registrations, setRegistrations] = useState(null);
@@ -38,14 +38,14 @@ export function useRegistrations(token, onExpired) {
     }
   };
 
-  const changeStatus = async (id, status) => {
+  const changeField = async (id, field, value) => {
     try {
-      const updated = await updateRegistrationStatus(id, status, token);
+      const updated = await updateRegistration(id, field, value, token);
       setRegistrations((current) => current.map((item) => (item.id === id ? updated : item)));
     } catch (failure) {
       handleFailure(failure);
     }
   };
 
-  return { registrations, error, remove, changeStatus, handleFailure };
+  return { registrations, error, remove, changeField, handleFailure };
 }

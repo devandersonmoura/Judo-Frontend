@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useOptions } from '../options/OptionsContext.jsx';
-import { BeltStrip } from '../ui/BeltStrip.jsx';
 import { Pagination } from '../ui/Pagination.jsx';
+import { BeltSelect } from './BeltSelect.jsx';
 import { DeleteDialog } from './DeleteDialog.jsx';
 import { formatDateTime } from './formatDateTime.js';
 import { StatusSelect } from './StatusSelect.jsx';
@@ -41,10 +41,9 @@ function RemoveButton({ name, onRemove }) {
   );
 }
 
-function Row({ registration, onRemove, onStatusChange }) {
-  const { belts, sizes } = useOptions();
+function Row({ registration, onRemove, onFieldChange }) {
+  const { sizes } = useOptions();
   const { id, name } = registration;
-  const belt = belts.find(({ value }) => value === registration.belt);
   const size = sizes.find(({ value }) => value === registration.size);
 
   return (
@@ -56,17 +55,18 @@ function Row({ registration, onRemove, onStatusChange }) {
         </span>
       </td>
       <td data-label="Faixa">
-        <span className="belt-label">
-          <BeltStrip color={belt.color} className="belt-strip--small" />
-          {belt.label}
-        </span>
+        <BeltSelect
+          name={name}
+          value={registration.belt}
+          onChange={(belt) => onFieldChange(id, 'belt', belt)}
+        />
       </td>
       <td className="table__nowrap" data-label="Enviado em">{formatDateTime(registration.createdAt)}</td>
       <td data-label="Status">
         <StatusSelect
           name={name}
           value={registration.status}
-          onChange={(status) => onStatusChange(id, status)}
+          onChange={(status) => onFieldChange(id, 'status', status)}
         />
       </td>
       <td className="table__actions">
@@ -76,7 +76,7 @@ function Row({ registration, onRemove, onStatusChange }) {
   );
 }
 
-export function RegistrationTable({ title, registrations, onRemove, onStatusChange }) {
+export function RegistrationTable({ title, registrations, onRemove, onFieldChange }) {
   const [requestedPage, setPage] = useState(1);
   const sorted = registrations.toSorted((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
 
@@ -113,7 +113,7 @@ export function RegistrationTable({ title, registrations, onRemove, onStatusChan
                   key={registration.id}
                   registration={registration}
                   onRemove={onRemove}
-                  onStatusChange={onStatusChange}
+                  onFieldChange={onFieldChange}
                 />
               ))}
             </tbody>

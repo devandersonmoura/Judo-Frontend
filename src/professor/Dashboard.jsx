@@ -10,7 +10,7 @@ function countLabel(total) {
 }
 
 export function Dashboard({ token, onLogout }) {
-  const { registrations, error, remove, changeStatus, handleFailure } = useRegistrations(
+  const { registrations, error, remove, changeField, handleFailure } = useRegistrations(
     token,
     onLogout,
   );
@@ -58,7 +58,7 @@ export function Dashboard({ token, onLogout }) {
       <FormLink />
 
       {hasEntries && (
-        <Orders registrations={registrations} onRemove={remove} onStatusChange={changeStatus} />
+        <Orders registrations={registrations} onRemove={remove} onFieldChange={changeField} />
       )}
     </div>
   );

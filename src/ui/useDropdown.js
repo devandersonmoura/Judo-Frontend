@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 
 const GAP = 4;
-const MENU_HEIGHT = 136;
+const OPTION_HEIGHT = 42;
+const MAX_MENU_HEIGHT = 300;
 
 // A tabela rola de lado e cortaria o menu: por isso ele usa posição fixa na tela.
-function menuPosition(trigger) {
+function menuPosition(trigger, count) {
   const rect = trigger.getBoundingClientRect();
-  const opensUp = rect.bottom + GAP + MENU_HEIGHT > window.innerHeight;
+  const height = Math.min(count * OPTION_HEIGHT + 10, MAX_MENU_HEIGHT);
+  const spaceBelow = window.innerHeight - rect.bottom - GAP;
+  const opensUp = spaceBelow < height && rect.top > spaceBelow;
+  const space = opensUp ? rect.top - GAP : spaceBelow;
+
   return {
     left: rect.left,
     minWidth: rect.width,
+    maxHeight: Math.min(MAX_MENU_HEIGHT, space - GAP),
     ...(opensUp ? { bottom: window.innerHeight - rect.top + GAP } : { top: rect.bottom + GAP }),
     transformOrigin: opensUp ? 'bottom' : 'top',
   };
@@ -26,7 +32,7 @@ export function useDropdown({ count, selectedIndex, onPick }) {
 
   const open = () => {
     setActiveIndex(selectedIndex);
-    setPosition(menuPosition(triggerRef.current));
+    setPosition(menuPosition(triggerRef.current, count));
   };
 
   const pick = (index) => {
@@ -37,20 +43,30 @@ export function useDropdown({ count, selectedIndex, onPick }) {
   useEffect(() => {
     if (!isOpen) return undefined;
 
+    const isInsideMenu = (event) => menuRef.current?.contains(event.target);
+
     const closeOnOutsidePress = (event) => {
-      const inside = [triggerRef, menuRef].some((ref) => ref.current?.contains(event.target));
-      if (!inside) close();
+      if (!isInsideMenu(event) && !triggerRef.current?.contains(event.target)) close();
+    };
+
+    // Rolar a lista de opções não pode fechar o menu; rolar a página, sim.
+    const closeOnPageScroll = (event) => {
+      if (!isInsideMenu(event)) close();
     };
 
     document.addEventListener('pointerdown', closeOnOutsidePress);
-    window.addEventListener('scroll', close, true);
+    window.addEventListener('scroll', closeOnPageScroll, true);
     window.addEventListener('resize', close);
     return () => {
       document.removeEventListener('pointerdown', closeOnOutsidePress);
-      window.removeEventListener('scroll', close, true);
+      window.removeEventListener('scroll', closeOnPageScroll, true);
       window.removeEventListener('resize', close);
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) menuRef.current?.children[activeIndex]?.scrollIntoView({ block: 'nearest' });
+  }, [isOpen, activeIndex]);
 
   const handleKeyDown = (event) => {
     const moves = {

@@ -11,7 +11,7 @@ import './styles/base.css';
 import './styles/form.css';
 import './styles/dialog.css';
 import './styles/professor.css';
-import './styles/status.css';
+import './styles/select.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
