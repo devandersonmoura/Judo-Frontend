@@ -359,3 +359,13 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 }
+
+.table--summary th:not(:first-child),
+.table--summary td {
+  border-left: 1px solid var(--line);
+}
+
+.table--summary .table__total,
+.table--summary thead th:last-child {
+  background: var(--accent-soft);
+}
