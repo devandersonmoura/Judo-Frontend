@@ -369,3 +369,9 @@
 .table--summary thead th:last-child {
   background: var(--accent-soft);
 }
+
+.row-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

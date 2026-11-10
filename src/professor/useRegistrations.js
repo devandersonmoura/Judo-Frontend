@@ -38,14 +38,16 @@ export function useRegistrations(token, onExpired) {
     }
   };
 
-  const changeField = async (id, field, value) => {
+  // Os erros seguem para o modal, que mostra o que corrigir sem fechar.
+  const save = async (id, data) => {
     try {
-      const updated = await updateRegistration(id, field, value, token);
+      const updated = await updateRegistration(id, data, token);
       setRegistrations((current) => current.map((item) => (item.id === id ? updated : item)));
     } catch (failure) {
-      handleFailure(failure);
+      if (failure.status === 401) onExpired();
+      throw failure;
     }
   };
 
-  return { registrations, error, remove, changeField, handleFailure };
+  return { registrations, error, remove, save, handleFailure };
 }

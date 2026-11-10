@@ -90,7 +90,12 @@ export function useDropdown({ count, selectedIndex, onPick }) {
     } else if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       pick(activeIndex);
-    } else if (event.key === 'Escape' || event.key === 'Tab') {
+    } else if (event.key === 'Tab') {
+      close();
+    } else if (event.key === 'Escape') {
+      // Dentro de um modal, o Esc fecha só o menu.
+      event.preventDefault();
+      event.stopPropagation();
       close();
     }
   };

@@ -11,7 +11,7 @@ const TABS = [
   { value: 'resumo', label: 'Resumo' },
 ];
 
-export function Orders({ registrations, onRemove, onFieldChange }) {
+export function Orders({ registrations, onRemove, onSave }) {
   const { categories } = useOptions();
   const [tab, setTab] = useState('pedidos');
   const [filter, setFilter] = useState(ALL_STATUSES);
@@ -41,7 +41,7 @@ export function Orders({ registrations, onRemove, onFieldChange }) {
                 title={label === 'Adulto' ? 'Adultos' : label}
                 registrations={visible.filter((item) => item.category === value)}
                 onRemove={onRemove}
-                onFieldChange={onFieldChange}
+                onSave={onSave}
               />
             ))}
           </div>

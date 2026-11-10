@@ -1,50 +1,20 @@
 import { useState } from 'react';
 import { useOptions } from '../options/OptionsContext.jsx';
+import { BeltStrip } from '../ui/BeltStrip.jsx';
 import { Pagination } from '../ui/Pagination.jsx';
-import { BeltSelect } from './BeltSelect.jsx';
-import { DeleteDialog } from './DeleteDialog.jsx';
 import { formatDateTime } from './formatDateTime.js';
-import { StatusSelect } from './StatusSelect.jsx';
+import { RowActions } from './RowActions.jsx';
 
 const PAGE_SIZE = 10;
 
-function RemoveButton({ name, onRemove }) {
-  const [confirming, setConfirming] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+const findOption = (options, value) => options.find((option) => option.value === value);
 
-  const handleConfirm = async () => {
-    setDeleting(true);
-    await onRemove();
-    setDeleting(false);
-    setConfirming(false);
-  };
-
-  return (
-    <>
-      <button
-        className="button button--small button--danger"
-        type="button"
-        aria-label={`Apagar ${name}`}
-        onClick={() => setConfirming(true)}
-      >
-        Apagar
-      </button>
-      {confirming && (
-        <DeleteDialog
-          name={name}
-          deleting={deleting}
-          onCancel={() => setConfirming(false)}
-          onConfirm={handleConfirm}
-        />
-      )}
-    </>
-  );
-}
-
-function Row({ registration, onRemove, onFieldChange }) {
-  const { sizes } = useOptions();
+function Row({ registration, onRemove, onSave }) {
+  const { belts, sizes, statuses } = useOptions();
   const { id, name } = registration;
-  const size = sizes.find(({ value }) => value === registration.size);
+  const size = findOption(sizes, registration.size);
+  const belt = findOption(belts, registration.belt);
+  const status = findOption(statuses, registration.status);
 
   return (
     <tr>
@@ -55,28 +25,32 @@ function Row({ registration, onRemove, onFieldChange }) {
         </span>
       </td>
       <td data-label="Faixa">
-        <BeltSelect
-          name={name}
-          value={registration.belt}
-          onChange={(belt) => onFieldChange(id, 'belt', belt)}
-        />
+        <span className="belt-label">
+          <BeltStrip color={belt.color} className="belt-strip--small" />
+          {belt.label}
+        </span>
       </td>
-      <td className="table__nowrap" data-label="Enviado em">{formatDateTime(registration.createdAt)}</td>
+      <td className="table__nowrap" data-label="Enviado em">
+        {formatDateTime(registration.createdAt)}
+      </td>
       <td data-label="Status">
-        <StatusSelect
-          name={name}
-          value={registration.status}
-          onChange={(status) => onFieldChange(id, 'status', status)}
-        />
+        <span className="status-badge" data-status={status.value}>
+          <span className="status-dot" data-status={status.value} />
+          {status.label}
+        </span>
       </td>
       <td className="table__actions">
-        <RemoveButton name={name} onRemove={() => onRemove(id)} />
+        <RowActions
+          registration={registration}
+          onRemove={() => onRemove(id)}
+          onSave={(data) => onSave(id, data)}
+        />
       </td>
     </tr>
   );
 }
 
-export function RegistrationTable({ title, registrations, onRemove, onFieldChange }) {
+export function RegistrationTable({ title, registrations, onRemove, onSave }) {
   const [requestedPage, setPage] = useState(1);
   const sorted = registrations.toSorted((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
 
@@ -113,7 +87,7 @@ export function RegistrationTable({ title, registrations, onRemove, onFieldChang
                   key={registration.id}
                   registration={registration}
                   onRemove={onRemove}
-                  onFieldChange={onFieldChange}
+                  onSave={onSave}
                 />
               ))}
             </tbody>

@@ -58,10 +58,10 @@ export async function fetchRegistrations(token) {
   return response.json();
 }
 
-export async function updateRegistration(id, field, value, token) {
-  const response = await request(`/registrations/${id}/${field}`, {
-    method: 'PATCH',
-    body: { [field]: value },
+export async function updateRegistration(id, data, token) {
+  const response = await request(`/registrations/${id}`, {
+    method: 'PUT',
+    body: data,
     token,
   });
   return response.json();
